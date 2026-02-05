@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    console.log('🎨 Generating AI model...')
+    console.log(`🎨 Generating AI model (${model_type})...`)
 
     // Call Replicate API
     const response = await fetch('https://api.replicate.com/v1/predictions', {

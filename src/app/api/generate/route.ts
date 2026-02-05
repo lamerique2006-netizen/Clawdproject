@@ -14,34 +14,25 @@ export async function POST(request: NextRequest) {
 
     console.log(`🎨 Generating AI model (${model_type})...`)
 
-    // Call Replicate API
-    const response = await fetch('https://api.replicate.com/v1/predictions', {
+    // Proxy to local Flask API
+    const response = await fetch('http://localhost:5000/api/v1/generate', {
       method: 'POST',
       headers: {
-        'Authorization': `Token ${process.env.REPLICATE_API_TOKEN}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        version: 'black-forest-labs/flux-schnell',
-        input: {
-          prompt: 'professional fashion model, elegant pose, studio lighting, white background, full body shot',
-          num_outputs: 1,
-          aspect_ratio: '9:16',
-          output_format: 'png',
-          output_quality: 90,
-        },
+        product_image_url,
+        model_type,
       }),
     })
 
     const data = await response.json()
 
-    return NextResponse.json({
-      status: 'success',
-      job_id: `job_${Date.now()}`,
-      model_url: data.output ? data.output[0] : null,
-      product_url: product_image_url,
-      message: 'Video generation started',
-    })
+    if (!response.ok) {
+      return NextResponse.json(data, { status: response.status })
+    }
+
+    return NextResponse.json(data)
   } catch (error: any) {
     console.error('❌ Error:', error)
     return NextResponse.json(

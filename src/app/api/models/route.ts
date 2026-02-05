@@ -1,23 +1,16 @@
 import { NextResponse } from 'next/server'
 
 export async function GET() {
-  return NextResponse.json({
-    models: [
-      {
-        id: 'fashion_female_1',
-        name: 'Elegant Female Model',
-        description: 'Professional fashion model, studio lighting',
-      },
-      {
-        id: 'fashion_male_1',
-        name: 'Professional Male Model',
-        description: 'Business casual, confident pose',
-      },
-      {
-        id: 'lifestyle_casual',
-        name: 'Casual Lifestyle',
-        description: 'Relaxed, everyday setting',
-      },
-    ],
-  })
+  try {
+    // Proxy to local Flask API
+    const response = await fetch('http://localhost:5000/api/v1/models')
+    const data = await response.json()
+    return NextResponse.json(data)
+  } catch (error) {
+    console.error('Error fetching models:', error)
+    return NextResponse.json(
+      { error: 'Failed to fetch models' },
+      { status: 500 }
+    )
+  }
 }

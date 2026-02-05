@@ -70,7 +70,8 @@ def generate_video():
             }
         )
         
-        model_url = model_output[0]
+        # Convert FileOutput to string URL
+        model_url = str(model_output[0]) if hasattr(model_output[0], '__str__') else model_output[0]
         print(f"✅ Model generated: {model_url}")
         
         return jsonify({

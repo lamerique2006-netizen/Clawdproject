@@ -1,6 +1,25 @@
 {
-  "buildCommand": "cd frontend && npm run build",
-  "installCommand": "cd frontend && npm install",
-  "outputDirectory": "frontend/.next",
-  "devCommand": "cd frontend && npm run dev"
+  "env": {
+    "REPLICATE_API_TOKEN": "@replicate_api_token"
+  },
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1",
+      "headers": {
+        "Cache-Control": "no-cache"
+      }
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/",
+      "status": 200
+    }
+  ]
 }

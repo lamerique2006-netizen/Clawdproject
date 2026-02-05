@@ -215,37 +215,50 @@ export default function Home() {
       </section>
 
       {/* Feature Cards */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-28">
         <ScrollAnimation variant="fadeUp">
-          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-8 sm:mb-12">Powerful Features</h2>
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 leading-tight">Powerful Features</h2>
+            <p className="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto">Everything you need to create stunning AI videos in one platform</p>
+          </div>
         </ScrollAnimation>
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ staggerChildren: 0.1 }}
-          className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8"
+          transition={{ staggerChildren: 0.12 }}
+          className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8"
         >
           {FEATURES.map((feature, i) => (
             <AnimatedCard key={i} delay={i * 0.15} hover>
-              <div className={`p-6 sm:p-8 rounded-2xl border border-dark-border bg-gradient-dark hover:border-brand-purple/50 transition group cursor-pointer`}>
+              <motion.div
+                whileHover={{ y: -8, boxShadow: '0 20px 60px rgba(124, 58, 237, 0.2)' }}
+                transition={{ duration: 0.3 }}
+                className={`relative p-7 sm:p-9 rounded-2xl border border-dark-border bg-gradient-to-br from-dark-card/80 to-dark-border/40 hover:border-brand-purple/60 transition group cursor-pointer overflow-hidden`}
+              >
+                {/* Gradient background on hover */}
                 <motion.div
-                  whileHover={{ scale: 1.2, rotate: 5 }}
-                  transition={{ duration: 0.3 }}
-                  className="text-4xl sm:text-5xl mb-4"
+                  className="absolute inset-0 bg-gradient-brand opacity-0 group-hover:opacity-5 transition-opacity duration-300"
+                  initial={{ opacity: 0 }}
+                />
+
+                <motion.div
+                  whileHover={{ scale: 1.25, rotate: 8 }}
+                  transition={{ duration: 0.3, type: 'spring' }}
+                  className="text-5xl sm:text-6xl mb-6 relative z-10"
                 >
                   {feature.icon}
                 </motion.div>
-                <h3 className="text-lg sm:text-xl font-bold mb-2">{feature.title}</h3>
-                <p className="text-sm sm:text-base text-gray-400 leading-relaxed">{feature.description}</p>
+                <h3 className="text-lg sm:text-xl font-bold mb-3 relative z-10">{feature.title}</h3>
+                <p className="text-sm sm:text-base text-gray-400 leading-relaxed relative z-10">{feature.description}</p>
                 <motion.div
-                  initial={{ x: 0 }}
-                  whileHover={{ x: 5 }}
-                  className="mt-6 flex items-center text-brand-pink font-semibold text-sm sm:text-base"
+                  initial={{ x: 0, opacity: 0.7 }}
+                  whileHover={{ x: 8, opacity: 1 }}
+                  className="mt-8 flex items-center text-brand-pink font-semibold text-sm sm:text-base relative z-10"
                 >
-                  Learn More <span className="ml-2">→</span>
+                  Learn More <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
                 </motion.div>
-              </div>
+              </motion.div>
             </AnimatedCard>
           ))}
         </motion.div>
@@ -282,21 +295,24 @@ export default function Home() {
       </section>
 
       {/* Pricing Preview */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-20">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-28">
         <ScrollAnimation variant="fadeUp">
-          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-8 sm:mb-12">Simple Pricing</h2>
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 leading-tight">Flexible Pricing</h2>
+            <p className="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto">Choose the perfect plan for your needs</p>
+          </div>
         </ScrollAnimation>
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ staggerChildren: 0.15 }}
-          className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8"
+          className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 md:gap-6"
         >
           {[
-            { credits: '250', price: '$9.99', popular: false },
-            { credits: '1,250', price: '$39.99', popular: true },
-            { credits: '3,500', price: '$99.99', popular: false },
+            { credits: '250', price: '$9.99', popular: false, perCredit: '$0.040' },
+            { credits: '1,250', price: '$39.99', popular: true, perCredit: '$0.032', saving: 'Save 20%' },
+            { credits: '3,500', price: '$99.99', popular: false, perCredit: '$0.029', saving: 'Save 27%' },
           ].map((tier, i) => (
             <motion.div
               key={i}
@@ -304,33 +320,63 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: i * 0.15 }}
-              whileHover={{ y: -10, boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)' }}
-              className={`p-6 sm:p-8 rounded-2xl border transition ${
+              whileHover={tier.popular ? { y: -12, boxShadow: '0 30px 80px rgba(236, 72, 153, 0.25)' } : { y: -8 }}
+              className={`relative p-7 sm:p-9 rounded-2xl border transition duration-300 ${
                 tier.popular
-                  ? 'bg-gradient-brand/20 border-brand-pink shadow-glow-pink'
-                  : 'bg-gradient-dark border-dark-border hover:border-brand-purple/50'
+                  ? 'bg-gradient-to-br from-brand-pink/20 to-brand-purple/10 border-brand-pink/60 shadow-glow-pink lg:scale-105'
+                  : 'bg-gradient-to-br from-dark-card/80 to-dark-border/40 border-dark-border hover:border-brand-purple/60'
               }`}
             >
+              {/* Popular badge */}
               {tier.popular && (
-                <motion.p
-                  initial={{ scale: 0 }}
-                  whileInView={{ scale: 1 }}
-                  transition={{ duration: 0.4, delay: i * 0.15 + 0.2 }}
-                  className="text-xs text-brand-pink font-bold mb-4"
+                <motion.div
+                  initial={{ scale: 0, rotate: -45 }}
+                  whileInView={{ scale: 1, rotate: 0 }}
+                  transition={{ duration: 0.4, delay: i * 0.15 + 0.2, type: 'spring' }}
+                  className="absolute -top-3 -right-3 bg-gradient-brand text-white px-4 py-1 rounded-full text-xs font-bold shadow-lg"
                 >
-                  ⭐ MOST POPULAR
-                </motion.p>
+                  🏆 POPULAR
+                </motion.div>
               )}
-              <p className="text-2xl sm:text-3xl font-bold mb-2">{tier.credits}</p>
-              <p className="text-sm sm:text-base text-gray-400 mb-6">Credits</p>
-              <p className="text-3xl sm:text-4xl font-bold bg-gradient-brand bg-clip-text text-transparent mb-6">{tier.price}</p>
+
+              <div className="mb-8">
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ delay: i * 0.15 + 0.1 }}
+                  className="text-4xl sm:text-5xl font-bold mb-2"
+                >
+                  {tier.credits}
+                </motion.p>
+                <p className="text-gray-400 text-sm">Credits per month</p>
+              </div>
+
+              <div className="mb-8 pb-8 border-b border-dark-border/50">
+                <p className="text-4xl sm:text-5xl font-bold bg-gradient-brand bg-clip-text text-transparent mb-2">
+                  {tier.price}
+                </p>
+                <p className="text-gray-400 text-xs">
+                  <span className="text-gray-500">{tier.perCredit} per credit</span>
+                </p>
+                {tier.saving && (
+                  <motion.span
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: i * 0.15 + 0.3 }}
+                    className="inline-block mt-3 text-xs font-bold text-green-400 bg-green-500/20 px-3 py-1 rounded-full"
+                  >
+                    ✓ {tier.saving}
+                  </motion.span>
+                )}
+              </div>
+
               <motion.button
-                whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(124, 58, 237, 0.6)' }}
+                whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className={`w-full py-3 rounded-xl font-bold text-sm sm:text-base transition ${
+                className={`w-full py-4 rounded-xl font-bold text-base transition duration-300 ${
                   tier.popular
-                    ? 'bg-gradient-brand text-white hover:shadow-glow-pink'
-                    : 'bg-dark-card border border-dark-border text-white hover:border-brand-purple'
+                    ? 'bg-gradient-brand text-white shadow-glow-purple hover:shadow-glow-purple-lg'
+                    : 'bg-dark-card border-2 border-dark-border text-white hover:border-brand-purple hover:bg-dark-card/80'
                 }`}
               >
                 Get Started

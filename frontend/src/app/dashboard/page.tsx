@@ -280,9 +280,11 @@ export default function DashboardPage() {
                   initial={{ opacity: 0, x: -30 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.6 }}
-                  className="rounded-2xl p-4 sm:p-6 md:p-8 bg-gradient-dark border border-dark-border hover:border-brand-purple/50 transition"
+                  className="rounded-2xl p-6 sm:p-8 md:p-10 bg-gradient-to-br from-dark-card/80 to-dark-border/40 border border-dark-border hover:border-brand-purple/60 transition-all duration-300"
                 >
-                  <label className="block text-xs sm:text-sm font-semibold text-gray-300 mb-3 sm:mb-4">📸 Upload Product Image</label>
+                  <label className="block text-sm font-semibold text-gray-300 mb-5 flex items-center gap-2">
+                    <span className="text-xl">📸</span> Upload Product Image
+                  </label>
                   <div className="relative">
                     <input
                       type="file"
@@ -297,32 +299,37 @@ export default function DashboardPage() {
                           initial={{ scale: 0.9, opacity: 0 }}
                           animate={{ scale: 1, opacity: 1 }}
                           transition={{ duration: 0.4 }}
-                          className="relative"
+                          className="relative group"
                         >
-                          <img src={previewImage} alt="Preview" className="w-full h-32 sm:h-48 object-cover rounded-xl" />
+                          <img src={previewImage} alt="Preview" className="w-full h-40 sm:h-56 object-cover rounded-2xl shadow-soft" />
                           <motion.div
                             initial={{ opacity: 0 }}
                             whileHover={{ opacity: 1 }}
                             transition={{ duration: 0.2 }}
-                            className="absolute inset-0 bg-black/50 rounded-xl flex items-center justify-center"
+                            className="absolute inset-0 bg-black/50 rounded-2xl flex items-center justify-center backdrop-blur-sm"
                           >
-                            <span className="text-white font-semibold">Change Image</span>
+                            <span className="text-white font-semibold text-center">
+                              <p className="text-lg mb-1">🔄</p>
+                              <p>Change Image</p>
+                            </span>
                           </motion.div>
                         </motion.div>
                       ) : (
                         <motion.div
-                          whileHover={{ borderColor: 'rgba(124, 58, 237, 1)', scale: 1.02 }}
-                          className="border-2 border-dashed border-brand-purple/30 rounded-xl p-12 text-center transition"
+                          whileHover={{ borderColor: 'rgba(124, 58, 237, 1)', scale: 1.02, backgroundColor: 'rgba(124, 58, 237, 0.05)' }}
+                          whileDrag={{ scale: 1.05, backgroundColor: 'rgba(124, 58, 237, 0.1)' }}
+                          className="border-2 border-dashed border-brand-purple/40 rounded-2xl p-12 text-center transition-all duration-300 hover:bg-brand-purple/5"
                         >
                           <motion.p
-                            animate={{ y: [0, -10, 0] }}
-                            transition={{ duration: 2, repeat: Infinity }}
-                            className="text-3xl mb-2"
+                            animate={{ y: [0, -12, 0] }}
+                            transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+                            className="text-4xl sm:text-5xl mb-4"
                           >
                             📤
                           </motion.p>
-                          <p className="text-gray-300 font-semibold">Drag and drop your image</p>
-                          <p className="text-sm text-gray-400 mt-1">or click to select</p>
+                          <p className="text-gray-300 font-semibold text-base sm:text-lg">Drag and drop your image</p>
+                          <p className="text-sm text-gray-400 mt-2">or click to browse</p>
+                          <p className="text-xs text-gray-500 mt-3">Supports PNG, JPG, WebP up to 10MB</p>
                         </motion.div>
                       )}
                     </label>
@@ -334,31 +341,39 @@ export default function DashboardPage() {
                   initial={{ opacity: 0, x: -30 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.6, delay: 0.1 }}
-                  className="rounded-2xl p-8 bg-gradient-dark border border-dark-border"
+                  className="rounded-2xl p-6 sm:p-8 bg-gradient-to-br from-dark-card/80 to-dark-border/40 border border-dark-border"
                 >
-                  <label className="block text-sm font-semibold text-gray-300 mb-4">🎯 Select AI Model</label>
-                  <div className="space-y-3">
+                  <label className="block text-sm font-semibold text-gray-300 mb-6 flex items-center gap-2">
+                    <span className="text-xl">🎯</span> Select AI Model
+                  </label>
+                  <div className="space-y-4">
                     {AI_MODELS.map((model, i) => (
                       <motion.button
                         key={model.id}
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.2 + i * 0.1, duration: 0.4 }}
-                        whileHover={{ scale: 1.02, x: 10 }}
-                        whileTap={{ scale: 0.98 }}
+                        whileHover={{ scale: 1.03, x: 12 }}
+                        whileTap={{ scale: 0.97 }}
                         onClick={() => setSelectedModel(model.id)}
-                        className={`w-full p-4 rounded-xl text-left font-semibold transition ${
+                        className={`w-full p-5 rounded-2xl text-left font-semibold transition-all duration-300 group border-2 ${
                           selectedModel === model.id
-                            ? 'bg-gradient-brand text-white shadow-glow-purple'
-                            : 'bg-dark-card border border-dark-border text-gray-300 hover:border-brand-purple'
+                            ? 'bg-gradient-brand text-white shadow-glow-purple border-brand-pink'
+                            : 'bg-dark-card/50 border-dark-border text-gray-300 hover:border-brand-purple hover:bg-dark-card/80'
                         }`}
                       >
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <p>{model.name}</p>
-                            <p className="text-xs text-gray-400">{model.description}</p>
+                        <div className="flex justify-between items-start">
+                          <div className="flex-1">
+                            <p className="text-base mb-1 group-hover:translate-x-1 transition-transform">{model.name}</p>
+                            <p className="text-xs text-gray-400 group-hover:text-gray-300">{model.description}</p>
                           </div>
-                          <span className="text-xs bg-black/30 px-2 py-1 rounded">25 credits</span>
+                          <motion.span
+                            initial={{ scale: 1 }}
+                            whileHover={{ scale: 1.1 }}
+                            className="text-xs bg-black/40 px-3 py-1.5 rounded-lg whitespace-nowrap ml-3 font-semibold"
+                          >
+                            25 credits
+                          </motion.span>
                         </div>
                       </motion.button>
                     ))}
@@ -370,27 +385,36 @@ export default function DashboardPage() {
                   initial={{ opacity: 0, x: -30 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.6, delay: 0.2 }}
-                  className="rounded-2xl p-8 bg-gradient-dark border border-dark-border"
+                  className="rounded-2xl p-6 sm:p-8 bg-gradient-to-br from-dark-card/80 to-dark-border/40 border border-dark-border"
                 >
-                  <label className="block text-sm font-semibold text-gray-300 mb-4">🎨 Object Position</label>
-                  <div className="grid grid-cols-5 gap-2">
+                  <label className="block text-sm font-semibold text-gray-300 mb-6 flex items-center gap-2">
+                    <span className="text-xl">🎨</span> Object Position
+                  </label>
+                  <div className="grid grid-cols-5 gap-3">
                     {POSITIONS.map((pos, i) => (
                       <motion.button
                         key={pos.id}
-                        initial={{ opacity: 0, scale: 0.8 }}
+                        initial={{ opacity: 0, scale: 0.7 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.3 + i * 0.05, duration: 0.4 }}
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
+                        whileHover={{ scale: 1.15, y: -5 }}
+                        whileTap={{ scale: 0.85 }}
                         onClick={() => setSelectedPosition(pos.id)}
-                        className={`py-3 px-2 rounded-xl font-semibold transition text-center ${
+                        className={`py-4 px-2 rounded-2xl font-semibold transition-all duration-300 text-center border-2 group ${
                           selectedPosition === pos.id
-                            ? 'bg-gradient-brand text-white shadow-glow-pink'
-                            : 'bg-dark-card border border-dark-border text-gray-300 hover:border-brand-pink'
+                            ? 'bg-gradient-brand text-white shadow-glow-pink border-brand-pink'
+                            : 'bg-dark-card/50 border-dark-border text-gray-300 hover:border-brand-pink hover:bg-dark-card/80'
                         }`}
                       >
-                        <div className="text-lg">{pos.icon}</div>
-                        <div className="text-xs mt-1">{pos.label}</div>
+                        <motion.div
+                          initial={{ scale: 1 }}
+                          whileHover={{ scale: 1.3, rotate: 5 }}
+                          transition={{ type: 'spring', stiffness: 200 }}
+                          className="text-2xl mb-2"
+                        >
+                          {pos.icon}
+                        </motion.div>
+                        <div className="text-xs font-medium group-hover:font-semibold transition">{pos.label}</div>
                       </motion.button>
                     ))}
                   </div>
